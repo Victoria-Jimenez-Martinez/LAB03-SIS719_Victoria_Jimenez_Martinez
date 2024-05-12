@@ -1,0 +1,60 @@
+---
+  const articleId = async (id) => {
+  const res = await fetch(`http://127.0.0.1:1337/api/articles/${id}`);
+  const data = await res.json();
+  return data.data.attributes;
+};
+
+const articleIds = [1, 2, 3];
+const articles = await Promise.all(articleIds.map(id => articleId(id)));
+
+const getImageUrl = (content) => content.match(/!\[.*?\]\((.*?)\)/)?.[1];
+---
+
+<h1>Articulos</h1>
+{articles.map(article => (
+  <div class="article">
+    <h2>{article.Title}</h2>
+    <img src={`${getImageUrl(article.content)}`} />
+    <p>{article.content}</p>
+  </div>
+))}
+
+<style>
+  h1 {
+    text-align: center;
+    margin-top: 20px; 
+    text-transform: uppercase;
+    letter-spacing: 0.3cm;
+    font-size: 2cm;
+  }
+  .article {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 180px;
+  }
+
+  .article h2 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 1.5cm;
+    font-family: 'Times New Roman', Times, serif;
+  }
+
+  .article img {
+    width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+    justify-content: center;
+  }
+
+  .article p {
+    font-size: 16px;
+    font-family: 'Times New Roman', Times, serif;
+    color: #666;
+  }
+</style>
